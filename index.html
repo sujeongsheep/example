@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>로컬 맵</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html, body { width: 100%; height: 100%; }
+        #container { display: flex; width: 100%; height: 100%; }
+        #map { flex: 1; width: 100%; height: 100%; }
+    </style>
+</head>
+<body>
+    <div id="container">
+        <div id="map"></div>
+        <div id="sidebar">
+            <h2>장소 목록</h2>
+            <div id="placeList"></div>
+        </div>
+    </div>
+
+    <!-- 카카오맵 API를 먼저 로드한 후 실행 -->
+    <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=여기에_카카오맵_API키를_넣으세요"></script>
+    <script>
+        // DOM이 완전히 로드된 후 실행
+        window.addEventListener('load', function() {
+            // 더미 데이터
+            const places = [
+                {
+                    name: "강남역",
+                    lat: 37.498095,
+                    lng: 127.027610
+                },
+                {
+                    name: "역삼역",
+                    lat: 37.500622,
+                    lng: 127.036456
+                },
+                {
+                    name: "삼성중앙역",
+                    lat: 37.503981,
+                    lng: 127.053358
+                }
+            ];
+
+            // 지도 초기화
+            const mapContainer = document.getElementById('map');
+            const mapOption = {
+                center: new kakao.maps.LatLng(37.498095, 127.027610),
+                level: 3
+            };
+
+            // 지도 생성
+            const map = new kakao.maps.Map(mapContainer, mapOption);
+
+            // 마커 생성 및 장소 목록 표시
+            places.forEach(place => {
+                // 마커 생성
+                const marker = new kakao.maps.Marker({
+                    map: map,
+                    position: new kakao.maps.LatLng(place.lat, place.lng)
+                });
+
+                // 장소 목록에 추가
+                const placeList = document.getElementById('placeList');
+                const placeItem = document.createElement('div');
+                placeItem.className = 'place-item';
+                placeItem.textContent = place.name;
+                placeList.appendChild(placeItem);
+            });
+        });
+    </script>
+</body>
+</html> 
